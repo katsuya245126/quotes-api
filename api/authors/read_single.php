@@ -13,8 +13,15 @@
     // Instantiate Author object
     $author = new Author($db);
 
+    if (!isset($_GET['id'])) {
+        echo json_encode(
+            array('message' => 'Missing Required Parameters')
+        );
+        die();
+    }
+
     // Get ID
-    $author->id = isset($_GET['id']) ? $_GET['id'] : die();
+    $author->id = $_GET['id'];
 
     $author->read_single();
 
