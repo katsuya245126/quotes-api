@@ -20,7 +20,7 @@
 
     if (is_null($data) || empty($data->author)) {
         echo json_encode(
-            array('message' => 'No info provided')
+            array('message' => 'Missing Required Parameters')
         );
         die();
     }
@@ -29,10 +29,10 @@
 
     if($author->create()) {
         echo json_encode(
-            array('message' => 'Post Created')
+            array('message' => 'Author Created')
         );
     } else {
         echo json_encode(
-            array('message' => 'Post Not Created')
+            array('message' => 'Author Not Created')
         );
     }

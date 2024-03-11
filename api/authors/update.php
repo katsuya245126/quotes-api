@@ -20,20 +20,20 @@
 
     if (is_null($data) || empty($data->id)) {
         echo json_encode(
-            array('message' => 'Necessary info not provided')
+            array('message' => 'Missing Required Parameters')
         );
         die();
     }
 
     $author->id = $data->id;
     $author->author = $data->author;
-    
+
     if($author->update()) {
         echo json_encode(
-            array('message' => 'Post Updated')
+            array('message' => 'Author Updated')
         );
     } else {
         echo json_encode(
-            array('message' => 'Post Not Updated')
+            array('message' => 'Author Not Updated')
         );
     }
