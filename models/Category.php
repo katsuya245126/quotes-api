@@ -34,7 +34,13 @@
             // Fetch result from DB into PHP associated array
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $this->category = $row['category'];
+            if($row) {
+                $this->category = $row['category'];
+
+                return true;
+            }
+
+            return false;
         }
 
         public function create() {

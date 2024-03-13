@@ -51,11 +51,17 @@
             // Fetch result from DB into PHP associated array
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $this->quote = $row['quote'];
-            $this->author_id = $row['author_id'];
-            $this->author = $row['author'];
-            $this->category_id = $row['category_id'];
-            $this->category = $row['category'];
+            if($row) {
+                $this->quote = $row['quote'];
+                $this->author_id = $row['author_id'];
+                $this->author = $row['author'];
+                $this->category_id = $row['category_id'];
+                $this->category = $row['category'];
+
+                return true;
+            }
+
+            return false;
         }
         
         public function create() {
