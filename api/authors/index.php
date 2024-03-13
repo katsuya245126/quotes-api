@@ -8,3 +8,26 @@
         header('Access-Control-Allow-Headers: Origin, Accept, Content-Type, X-Requested-With');
         exit();
     } 
+
+    switch ($method) {
+        case 'GET':
+            // Determine if it's a single read or all quotes
+            if (isset($_GET['id'])) {
+                require 'read_single.php';
+            } else {
+                require 'read.php';
+            }
+            break;
+        case 'POST':
+            require 'create.php';
+            break;
+        case 'PUT':
+            require 'update.php';
+            break;
+        case 'DELETE':
+            require 'delete.php';
+            break;
+        default:
+            echo json_encode(['message' => 'Method not supported']);
+            break;
+    }
