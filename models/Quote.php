@@ -57,16 +57,23 @@
             $this->category_id = $row['category_id'];
             $this->category = $row['category'];
         }
-        /*
+        
         public function create() {
-            $query = 'INSERT INTO ' . $this->table . ' (category) VALUES (:category)';
+            $query = "
+                INSERT INTO quotes (quote, author_id, category_id)
+                VALUES (:quote, :author_id, :category_id)
+            ";
 
             $stmt = $this->conn->prepare($query);
             
             // Clean data
-            $this->category = htmlspecialchars(strip_tags($this->category));
+            $this->quote = htmlspecialchars(strip_tags($this->quote));
+            $this->author_id = htmlspecialchars(strip_tags($this->author_id));
+            $this->category_id = htmlspecialchars(strip_tags($this->category_id));
 
-            $stmt->bindParam(':category', $this->category);
+            $stmt->bindParam(':quote', $this->quote);
+            $stmt->bindParam(':author_id', $this->author_id);
+            $stmt->bindParam(':category_id', $this->category_id);
 
             if($stmt->execute()) {
                 return true;
@@ -77,6 +84,7 @@
             return false;
         }
 
+        /*
         public function update() {
             $query = 'UPDATE ' . $this->table . ' SET category = :category WHERE id = :id';
 
