@@ -29,12 +29,19 @@
     $quote->author_id = $data->author_id;
     $quote->category_id = $data->category_id;
 
-    if($quote->create()) {
+    $response = $quote->create();
+
+    if ($response['success']) {
         echo json_encode(
-            array('message' => 'Quote Created')
+            array(
+                'id' => $quote->id,
+                'quote' => $quote->quote,
+                'author' => $quote->author,
+                'category' => $quote->category
+            )
         );
     } else {
         echo json_encode(
-            array('message' => 'Quote Not Created')
+            array('message' => $response['message'])
         );
     }

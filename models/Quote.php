@@ -65,9 +65,26 @@
         }
         
         public function create() {
+            // Check for valid foreign keys for authors and categories
+            if (!$this->checkForeignKeyExists('authors', $this->author_id)) {
+                return ['success' => false, 'message' => 'author_id Not Found'];
+            }
+            
+            if (!$this->checkForeignKeyExists('categories', $this->category_id)) {
+                return ['success' => false, 'message' => 'category_id Not Found'];
+            }
+
+            // Insert info and return id, author_id, and category_id
             $query = "
-                INSERT INTO {$this->table} (quote, author_id, category_id)
-                VALUES (:quote, :author_id, :category_id)
+                WITH inserted AS (
+                    INSERT INTO {$this->table} (quote, author_id, category_id)
+                    VALUES (:quote, :author_id, :category_id)
+                    RETURNING id, author_id, category_id
+                )
+                SELECT inserted.id, a.author AS author, c.category AS category
+                FROM inserted
+                JOIN authors a ON a.id = inserted.author_id
+                JOIN categories c ON c.id = inserted.category_id
             ";
 
             $stmt = $this->conn->prepare($query);
@@ -82,6 +99,12 @@
             $stmt->bindParam(':category_id', $this->category_id);
 
             if($stmt->execute()) {
+                // Fetch and set ID, author, and category before returning
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $this->id = $row['id'];
+                $this->author = $row['author'];
+                $this->category = $row['category'];
+                
                 return true;
             }
 
@@ -137,6 +160,22 @@
 
             printf("Error: %s.\n", $stmt->error);
 
+            return false;
+        }
+
+        private function checkForeignKeyExists($tableName, $id) {
+            // Check if at least one row exists with the id in the given table
+            // Returns True if it exists, False if not
+            $query = "SELECT EXISTS(SELECT 1 FROM {$tableName} WHERE id = :id)";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+        
+            if ($stmt->execute()) {
+                // Fetch first column from the first row in the result set and return it as boolean
+                return (bool) $stmt->fetchColumn();
+            }
+        
             return false;
         }
     }
