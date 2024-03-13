@@ -8,7 +8,9 @@
         public $id;
         public $quote;
         public $author_id;
+        public $author;
         public $category_id;
+        public $category;
 
         public function __construct($db) {
             $this->conn = $db;
@@ -29,9 +31,16 @@
             return $stmt;
         }
 
-        /*
+        
         public function read_single() {
-            $query = 'SELECT * FROM ' . $this->table . ' WHERE id = :id LIMIT 1';
+            $query = "
+                SELECT q.id, q.quote, q.author_id, q.category_id, a.author, c.category 
+                FROM {$this->table} as q
+                INNER JOIN authors a ON q.author_id = a.id
+                INNER JOIN categories c ON q.category_id = c.id
+                WHERE q.id = :id
+                LIMIT 1
+            ";
 
             // Prepare and bind param
             $stmt = $this->conn->prepare($query);
@@ -42,9 +51,13 @@
             // Fetch result from DB into PHP associated array
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            $this->quote = $row['quote'];
+            $this->author_id = $row['author_id'];
+            $this->author = $row['author'];
+            $this->category_id = $row['category_id'];
             $this->category = $row['category'];
         }
-
+        /*
         public function create() {
             $query = 'INSERT INTO ' . $this->table . ' (category) VALUES (:category)';
 
