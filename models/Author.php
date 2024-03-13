@@ -34,7 +34,13 @@
             // Fetch result from DB into PHP associated array
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $this->author = $row['author'];
+            if($row) {
+                $this->author = $row['author'];
+
+                return true;
+            }
+
+            return false;
         }
 
         public function create() {
