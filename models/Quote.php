@@ -60,7 +60,7 @@
         
         public function create() {
             $query = "
-                INSERT INTO quotes (quote, author_id, category_id)
+                INSERT INTO {$this->table} (quote, author_id, category_id)
                 VALUES (:quote, :author_id, :category_id)
             ";
 
@@ -84,18 +84,25 @@
             return false;
         }
 
-        /*
         public function update() {
-            $query = 'UPDATE ' . $this->table . ' SET category = :category WHERE id = :id';
+            $query = "
+                UPDATE {$this->table}
+                SET quote = :quote, author_id = :author_id, category_id = :category_id
+                WHERE id = :id;
+            ";
 
             $stmt = $this->conn->prepare($query);
             
             // Clean data
-            $this->category = htmlspecialchars(strip_tags($this->category));
             $this->id = htmlspecialchars(strip_tags($this->id));
+            $this->quote = htmlspecialchars(strip_tags($this->quote));
+            $this->author_id = htmlspecialchars(strip_tags($this->author_id));
+            $this->category_id = htmlspecialchars(strip_tags($this->category_id));
 
-            $stmt->bindParam(':category', $this->category);
             $stmt->bindParam(':id', $this->id);
+            $stmt->bindParam(':quote', $this->quote);
+            $stmt->bindParam(':author_id', $this->author_id);
+            $stmt->bindParam(':category_id', $this->category_id);
 
             if($stmt->execute()) {
                 return true;
@@ -105,7 +112,7 @@
 
             return false;
         }
-
+        /*
         public function delete() {
             $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
 
