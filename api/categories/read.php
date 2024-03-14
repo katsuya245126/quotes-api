@@ -32,5 +32,5 @@
 
         echo json_encode($categories_arr);
     } else {
-        echo json_encode(array('message' => 'No posts found'));
+        echo json_encode(array('message' => 'No Categories found'));
     }

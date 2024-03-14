@@ -18,7 +18,7 @@
     // Get raw posted data
     $data = json_decode(file_get_contents("php://input"));
 
-    if (is_null($data) || empty($data->id)) {
+    if (is_null($data) || empty($data->id) || empty($data->category)) {
         echo json_encode(
             array('message' => 'Missing Required Parameters')
         );
@@ -28,12 +28,17 @@
     $category->id = $data->id;
     $category->category = $data->category;
 
-    if($category->update()) {
+    $response = $category->update();
+
+    if($response['success']) {
         echo json_encode(
-            array('message' => 'Category Updated')
+            array(
+                'id' => $category->id,
+                'category' => $category->category
+            )
         );
     } else {
         echo json_encode(
-            array('message' => 'Category Not Updated')
+            array('message' => $response['message'])
         );
     }

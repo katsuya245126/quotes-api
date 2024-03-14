@@ -26,13 +26,17 @@
     }
 
     $category->id = $data->id;
-    
-    if($category->delete()) {
+
+    $response = $category->delete();
+
+    if($response['success']) {
         echo json_encode(
-            array('message' => 'Category Deleted')
+            array(
+                'id' => $category->id,
+            )
         );
     } else {
         echo json_encode(
-            array('message' => 'Category Not Deleted')
+            array('message' => $response['message'])
         );
     }

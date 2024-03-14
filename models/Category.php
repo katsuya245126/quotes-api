@@ -23,6 +23,11 @@
         }
 
         public function read_single() {
+            // Check if the id exists in the table first
+            if (!$this->recordExists($this->table, $this->id)) {
+                return ['success' => false, 'message' => 'category_id Not Found'];
+            }
+
             $query = 'SELECT * FROM ' . $this->table . ' WHERE id = :id LIMIT 1';
 
             // Prepare and bind param
@@ -37,10 +42,10 @@
             if($row) {
                 $this->category = $row['category'];
 
-                return true;
+                return ['success' => true];
             }
 
-            return false;
+            return ['success' => false, 'message' => 'Something went wrong'];
         }
 
         public function create() {
@@ -58,16 +63,19 @@
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 $this->id = $row['id'];
                 
-                return true;
+                return ['success' => true];
             }
 
-            printf("Error: %s.\n", $stmt->error);
-
-            return false;
+            return ['success' => false, 'message' => 'Category Not Created'];
         }
 
         public function update() {
-            $query = 'UPDATE ' . $this->table . ' SET category = :category WHERE id = :id';
+            // Check if the id exists in the table first
+            if (!$this->recordExists($this->table, $this->id)) {
+                return ['success' => false, 'message' => 'category_id Not Found'];
+            }
+
+            $query = 'UPDATE ' . $this->table . ' SET category = :category WHERE id = :id RETURNING id';
 
             $stmt = $this->conn->prepare($query);
             
@@ -79,16 +87,23 @@
             $stmt->bindParam(':id', $this->id);
 
             if($stmt->execute()) {
-                return true;
+                // Fetch and set ID before returning
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $this->id = $row['id'];
+
+                return ['success' => true];
             }
 
-            printf("Error: %s.\n", $stmt->error);
-
-            return false;
+            return ['success' => false, 'message' => 'Category Not Updated'];
         }
 
         public function delete() {
-            $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+            // Check if the id exists in the table first
+            if (!$this->recordExists($this->table, $this->id)) {
+                return ['success' => false, 'message' => 'category_id Not Found'];
+            }
+
+            $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id RETURNING id';
 
             $stmt = $this->conn->prepare($query);
 
@@ -97,11 +112,25 @@
             $stmt->bindParam(':id', $this->id);
 
             if($stmt->execute()) {
-                return true;
+                return ['success' => true];
             }
 
-            printf("Error: %s.\n", $stmt->error);
+            return ['success' => false, 'message' => 'Category Not Deleted'];
+        }
 
+        private function recordExists($tableName, $id) {
+            // Check if at least one row exists with the id in the given table
+            // Returns True if it exists, False if not
+            $query = "SELECT EXISTS(SELECT 1 FROM {$tableName} WHERE id = :id)";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+        
+            if ($stmt->execute()) {
+                // Fetch first column from the first row in the result set and return it as boolean
+                return (bool) $stmt->fetchColumn();
+            }
+        
             return false;
         }
     }

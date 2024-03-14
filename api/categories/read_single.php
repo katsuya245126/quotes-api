@@ -23,15 +23,17 @@
     // Get ID
     $category->id = $_GET['id'];
 
-    if($category->read_single()) {
-        $category_arr = array(
-            'id' => $category->id,
-            'category' => $category->category
+    $response = $category->read_single();
+
+    if($response['success']) {
+        echo json_encode(
+            array(
+                'id' => $category->id,
+                'category' => $category->category
+            )
         );
-    
-        print_r(json_encode($category_arr));
     } else {
         echo json_encode(
-            array('message' => 'category_id Not Found')
+            array('message' => $response['message'])
         );
     }

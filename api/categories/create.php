@@ -27,7 +27,9 @@
 
     $category->category = $data->category;
 
-    if($category->create()) {
+    $response = $category->create();
+
+    if($response['success']) {
         echo json_encode(
             array(
                 'id' => $category->id,
@@ -36,6 +38,6 @@
         );
     } else {
         echo json_encode(
-            array('message' => 'Author Not Created')
+            array('message' => $response['message'])
         );
     }
