@@ -66,11 +66,11 @@
         
         public function create() {
             // Check for valid foreign keys for authors and categories
-            if (!$this->checkForeignKeyExists('authors', $this->author_id)) {
+            if (!$this->recordExists('authors', $this->author_id)) {
                 return ['success' => false, 'message' => 'author_id Not Found'];
             }
             
-            if (!$this->checkForeignKeyExists('categories', $this->category_id)) {
+            if (!$this->recordExists('categories', $this->category_id)) {
                 return ['success' => false, 'message' => 'category_id Not Found'];
             }
 
@@ -105,12 +105,12 @@
                 $this->author = $row['author'];
                 $this->category = $row['category'];
                 
-                return true;
+                return ['success' => true];
             }
 
             printf("Error: %s.\n", $stmt->error);
 
-            return false;
+            return ['success' => false, 'message' => 'Something went wrong'];
         }
 
         public function update() {
@@ -163,7 +163,7 @@
             return false;
         }
 
-        private function checkForeignKeyExists($tableName, $id) {
+        private function recordExists($tableName, $id) {
             // Check if at least one row exists with the id in the given table
             // Returns True if it exists, False if not
             $query = "SELECT EXISTS(SELECT 1 FROM {$tableName} WHERE id = :id)";
