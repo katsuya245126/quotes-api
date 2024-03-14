@@ -17,15 +17,15 @@
             }
             // Check if filtering by author
             else if (isset($_GET['author_id']) && !isset($_GET['category_id'])) {
-                require 'read_author.php'; 
+                require 'read_by_author.php'; 
             }
             // Check if filtering by category
             else if (isset($_GET['category_id']) && !isset($_GET['author_id'])) {
-                require 'read_category.php';
+                require 'read_by_category.php';
             }
             // Check if filtering by both author and category
             else if (isset($_GET['author_id']) && isset($_GET['category_id'])) {
-                require 'read_author_category.php';
+                require 'read_by_author_category.php';
             }
             // If no specific filter is provided, return all quotes
             else {
