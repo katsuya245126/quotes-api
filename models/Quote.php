@@ -110,6 +110,48 @@
                 return ['success' => false, 'message' => 'No Quotes Found'];
             }
         } 
+
+        public function read_by_category() {
+            // Check if the id exists in the table first
+            if (!$this->recordExists('categories', $this->category_id)) {
+                return ['success' => false, 'message' => 'No Quotes Found'];
+            }
+
+            $query = "
+                SELECT q.id, q.quote, q.author_id, q.category_id, a.author, c.category 
+                FROM {$this->table} as q
+                INNER JOIN authors a ON q.author_id = a.id
+                INNER JOIN categories c ON q.category_id = c.id
+                WHERE c.id = :category_id
+            ";
+
+            // Prepare and bind param
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':category_id', $this->category_id);
+
+            $stmt->execute();
+
+            // Fetch all rows by category
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // If rows are returned, category has quotes
+            if(count($rows) > 0) {
+                // Only include the id, quote, author name, and category name in the result
+                $categories_arr = array_map(function($row) {
+                    return [
+                        'id' => $row['id'],
+                        'quote' => $row['quote'],
+                        'author' => $row['author'],
+                        'category' => $row['category']
+                    ];
+                }, $rows);
+
+                return ['success' => true, 'data' => $categories_arr];
+            } else {
+                // The author exists, but there are no quotes for them
+                return ['success' => false, 'message' => 'No Quotes Found'];
+            }
+        } 
         
         public function create() {
             // Check for valid foreign keys for authors and categories
