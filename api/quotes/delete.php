@@ -27,12 +27,16 @@
 
     $quote->id = $data->id;
     
-    if($quote->delete()) {
+    $response = $quote->delete();
+
+    if ($response['success']) {
         echo json_encode(
-            array('message' => 'Quote Deleted')
+            array(
+                'id' => $quote->id
+            )
         );
     } else {
         echo json_encode(
-            array('message' => 'Quote Not Deleted')
+            array('message' => $response['message'])
         );
     }

@@ -33,6 +33,11 @@
 
         
         public function read_single() {
+            // Check if the id exists in the table first
+            if (!$this->recordExists($this->table, $this->id)) {
+                return ['success' => false, 'message' => 'No Quotes Found'];
+            }
+
             $query = "
                 SELECT q.id, q.quote, q.author_id, q.category_id, a.author, c.category 
                 FROM {$this->table} as q
@@ -58,10 +63,10 @@
                 $this->category_id = $row['category_id'];
                 $this->category = $row['category'];
 
-                return true;
+                return ['success' => true];
             }
 
-            return false;
+            return ['success' => false, 'message' => 'Something went wrong'];
         }
         
         public function create() {
@@ -76,15 +81,9 @@
 
             // Insert info and return id, author_id, and category_id
             $query = "
-                WITH inserted AS (
-                    INSERT INTO {$this->table} (quote, author_id, category_id)
-                    VALUES (:quote, :author_id, :category_id)
-                    RETURNING id, author_id, category_id
-                )
-                SELECT inserted.id, a.author AS author, c.category AS category
-                FROM inserted
-                JOIN authors a ON a.id = inserted.author_id
-                JOIN categories c ON c.id = inserted.category_id
+                INSERT INTO {$this->table} (quote, author_id, category_id)
+                VALUES (:quote, :author_id, :category_id)
+                RETURNING id
             ";
 
             $stmt = $this->conn->prepare($query);
@@ -99,25 +98,36 @@
             $stmt->bindParam(':category_id', $this->category_id);
 
             if($stmt->execute()) {
-                // Fetch and set ID, author, and category before returning
+                // Fetch and set ID category before returning
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 $this->id = $row['id'];
-                $this->author = $row['author'];
-                $this->category = $row['category'];
                 
                 return ['success' => true];
             }
 
-            printf("Error: %s.\n", $stmt->error);
-
-            return ['success' => false, 'message' => 'Something went wrong'];
+            return ['success' => false, 'message' => 'Quote Not Created'];
         }
 
         public function update() {
+            // Check if the id exists in the table first
+            if (!$this->recordExists($this->table, $this->id)) {
+                return ['success' => false, 'message' => 'No Quotes Found'];
+            }
+
+            // Check for valid foreign keys for authors and categories
+            if (!$this->recordExists('authors', $this->author_id)) {
+                return ['success' => false, 'message' => 'author_id Not Found'];
+            }
+            
+            if (!$this->recordExists('categories', $this->category_id)) {
+                return ['success' => false, 'message' => 'category_id Not Found'];
+            }
+
             $query = "
                 UPDATE {$this->table}
                 SET quote = :quote, author_id = :author_id, category_id = :category_id
-                WHERE id = :id;
+                WHERE id = :id
+                RETURNING id;
             ";
 
             $stmt = $this->conn->prepare($query);
@@ -134,18 +144,26 @@
             $stmt->bindParam(':category_id', $this->category_id);
 
             if($stmt->execute()) {
-                return true;
+                // Fetch and set ID category before returning
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $this->id = $row['id'];
+                
+                return ['success' => true];
             }
 
-            printf("Error: %s.\n", $stmt->error);
-
-            return false;
+            return ['success' => false, 'message' => 'Quote Not Updated'];
         }
 
         public function delete() {
+            // Check if the id exists in the table first
+            if (!$this->recordExists($this->table, $this->id)) {
+                return ['success' => false, 'message' => 'No Quotes Found'];
+            }
+
             $query = "
                 DELETE FROM {$this->table}
-                WHERE id = :id;
+                WHERE id = :id
+                RETURNING id;
             ";
 
             $stmt = $this->conn->prepare($query);
@@ -155,12 +173,14 @@
             $stmt->bindParam(':id', $this->id);
 
             if($stmt->execute()) {
-                return true;
+                // Fetch and set ID category before returning
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $this->id = $row['id'];
+                
+                return ['success' => true];
             }
 
-            printf("Error: %s.\n", $stmt->error);
-
-            return false;
+            return ['success' => false, 'message' => 'Quote Not Deleted'];
         }
 
         private function recordExists($tableName, $id) {

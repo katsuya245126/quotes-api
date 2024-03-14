@@ -23,17 +23,19 @@
     // Get ID
     $quote->id = $_GET['id'];
 
-    if($quote->read_single()) {
-        $quote_arr = array(
-            'id' => $quote->id,
-            'quote' => $quote->quote,
-            'author' =>$quote->author,
-            'category' => $quote->category
-        );
+    $response = $quote->read_single();
 
-        print_r(json_encode($quote_arr));
+    if($response['success']) {
+        echo json_encode(
+            array(
+                'id' => $quote->id,
+                'quote' => $quote->quote,
+                'author' =>$quote->author,
+                'category' => $quote->category
+            )
+        );
     } else {
         echo json_encode(
-            array('message' => 'No Quotes Found')
+            array('message' => $response['message'])
         );
     }
