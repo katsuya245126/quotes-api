@@ -23,15 +23,17 @@
     // Get ID
     $author->id = $_GET['id'];
 
-    if($author->read_single()) {
-        $author_arr = array(
-            'id' => $author->id,
-            'author' => $author->author
-        );
+    $response = $author->read_single();
 
-        print_r(json_encode($author_arr));
+    if($response['success']) {
+        echo json_encode(
+            array(
+                'id' => $author->id,
+                'author' => $author->author
+            )
+        );
     } else {
         echo json_encode(
-            array('message' => 'author_id Not Found')
+            array('message' => $response['message'])
         );
     }

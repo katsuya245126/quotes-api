@@ -28,12 +28,17 @@
     $author->id = $data->id;
     $author->author = $data->author;
 
-    if($author->update()) {
+    $response = $author->update();
+
+    if($response['success']) {
         echo json_encode(
-            array('message' => 'Author Updated')
+            array(
+                'id' => $author->id,
+                'author' => $author->author
+            )
         );
     } else {
         echo json_encode(
-            array('message' => 'Author Not Updated')
+            array('message' => $response['message'])
         );
     }

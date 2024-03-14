@@ -26,13 +26,17 @@
     }
 
     $author->id = $data->id;
-    
-    if($author->delete()) {
+
+    $response = $author->delete();
+
+    if($response['success']) {
         echo json_encode(
-            array('message' => 'Author Deleted')
+            array(
+                'id' => $author->id,
+            )
         );
     } else {
         echo json_encode(
-            array('message' => 'Author Not Deleted')
+            array('message' => $response['message'])
         );
     }

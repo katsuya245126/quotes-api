@@ -27,7 +27,9 @@
 
     $author->author = $data->author;
 
-    if($author->create()) {
+    $response = $author->create();
+
+    if($response['success']) {
         echo json_encode(
             array(
                 'id' => $author->id,
@@ -36,6 +38,6 @@
         );
     } else {
         echo json_encode(
-            array('message' => 'Author Not Created')
+            array('message' => $response['message'])
         );
     }
