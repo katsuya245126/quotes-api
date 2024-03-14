@@ -11,10 +11,24 @@
     
     switch ($method) {
         case 'GET':
-            // Determine if it's a single read or all quotes
+            // Check if specific quote is requested
             if (isset($_GET['id'])) {
                 require 'read_single.php';
-            } else {
+            }
+            // Check if filtering by author
+            else if (isset($_GET['author_id']) && !isset($_GET['category_id'])) {
+                require 'read_author.php'; 
+            }
+            // Check if filtering by category
+            else if (isset($_GET['category_id']) && !isset($_GET['author_id'])) {
+                require 'read_category.php';
+            }
+            // Check if filtering by both author and category
+            else if (isset($_GET['author_id']) && isset($_GET['category_id'])) {
+                require 'read_author_category.php';
+            }
+            // If no specific filter is provided, return all quotes
+            else {
                 require 'read.php';
             }
             break;
