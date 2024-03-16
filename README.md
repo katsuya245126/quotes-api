@@ -1,4 +1,4 @@
-# FHSU INF653 Midterm Project: Quotes API
+# FHSU INF653 Midterm Project: Quotes API by Sung Guk (John) Lee
 
 ## About
 
