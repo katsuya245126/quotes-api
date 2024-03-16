@@ -15,14 +15,14 @@
             $this->dbname = getenv('DBNAME');
             $this->username = getenv('USERNAME');
             $this->password = getenv('PASSWORD');
-            $this->port = getenv('PORT');
+            $this->port = getenv('DB_PORT');
         }
 
         public function connect() {
             if ($this->conn) {
                 return $this->conn;
             } else {
-                $dsn = "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname};sslcert=blank;";
+                $dsn = "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname};sslmode=require;";
 
                 try {
                     $this->conn = new PDO($dsn, $this->username, $this->password);
