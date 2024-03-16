@@ -1,4 +1,5 @@
-# FHSU INF653 Midterm Project: Quotes API by Sung Guk (John) Lee
+# FHSU INF653 Midterm Project
+# Quotes API by Sung Guk (John) Lee
 
 ## About
 
@@ -43,11 +44,11 @@ The API is accessible at the following base URL: `https://quotes-api-25h1.onrend
 - `/authors/` - Delete an existing author
 - `/categories/` - Delete an existing category
 
-**\## API Documentation**
+**API Documentation**
 
 For detailed information about the API endpoints, request/response formats, and examples, please refer to the `index.php` file in the project's root directory.
 
-**\## Deployment**
+**Deployment**
 
 This project is deployed on render.com and can be accessed at the following URL:
 
