@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- TODO: CHANGE LINKS FROM EXAMPLE.COM -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quotes API</title>
@@ -59,31 +58,31 @@
         <div class="endpoint">
             <h3>GET /api/quotes/</h3>
             <p>Returns all quotes.</p>
-            <p>Example: <code>https://example.com/api/quotes/</code></p>
+            <p>Example: <code>https://quotes-api-25h1.onrender.com/api/quotes/</code></p>
         </div>
 
         <div class="endpoint">
             <h3>GET /api/quotes/?id=4</h3>
             <p>Returns the specific quote with the given id.</p>
-            <p>Example: <code>https://example.com/api/quotes/?id=4</code></p>
+            <p>Example: <code>https://quotes-api-25h1.onrender.com/api/quotes/?id=4</code></p>
         </div>
 
         <div class="endpoint">
             <h3>GET /api/quotes/?author_id=10</h3>
             <p>Returns all quotes from the author with the given id.</p>
-            <p>Example: <code>https://example.com/api/quotes/?author_id=10</code></p>
+            <p>Example: <code>https://quotes-api-25h1.onrender.com/api/quotes/?author_id=10</code></p>
         </div>
 
         <div class="endpoint">
             <h3>GET /api/quotes/?category_id=8</h3>
             <p>Returns all quotes in the category with the given id.</p>
-            <p>Example: <code>https://example.com/api/quotes/?category_id=8</code></p>
+            <p>Example: <code>https://quotes-api-25h1.onrender.com/api/quotes/?category_id=8</code></p>
         </div>
 
         <div class="endpoint">
             <h3>GET /api/quotes/?author_id=3&category_id=4</h3>
             <p>Returns all quotes from the author with id=3 that are in the category with id=4.</p>
-            <p>Example: <code>https://example.com/api/quotes/?author_id=3&category_id=4</code></p>
+            <p>Example: <code>https://quotes-api-25h1.onrender.com/api/quotes/?author_id=3&category_id=4</code></p>
         </div>
 
         <div class="endpoint">
@@ -94,13 +93,13 @@
         <div class="endpoint">
             <h3>GET /api/authors/</h3>
             <p>Returns all authors with their ids.</p>
-            <p>Example: <code>https://example.com/api/authors/</code></p>
+            <p>Example: <code>https://quotes-api-25h1.onrender.com/api/authors/</code></p>
         </div>
 
         <div class="endpoint">
             <h3>GET /api/authors/?id=5</h3>
             <p>Returns the specific author with the given id.</p>
-            <p>Example: <code>https://example.com/api/authors/?id=5</code></p>
+            <p>Example: <code>https://quotes-api-25h1.onrender.com/api/authors/?id=5</code></p>
         </div>
 
         <div class="endpoint">
@@ -111,13 +110,13 @@
         <div class="endpoint">
             <h3>GET /api/categories/</h3>
             <p>Returns all categories with their ids and names.</p>
-            <p>Example: <code>https://example.com/api/categories/</code></p>
+            <p>Example: <code>https://quotes-api-25h1.onrender.com/api/categories/</code></p>
         </div>
 
         <div class="endpoint">
             <h3>GET /api/categories/?id=7</h3>
             <p>Returns the specific category with the given id.</p>
-            <p>Example: <code>https://example.com/api/categories/?id=7</code></p>
+            <p>Example: <code>https://quotes-api-25h1.onrender.com/api/categories/?id=7</code></p>
         </div>
 
         <div class="endpoint">

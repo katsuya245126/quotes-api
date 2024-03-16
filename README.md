@@ -13,7 +13,7 @@ This RESTful API is developed as the midterm project for the INF653 Back End Web
 
 ## Usage
 
-The API is accessible at the following base URL: `Add later`
+The API is accessible at the following base URL: `https://quotes-api-25h1.onrender.com/api`
 
 ## Endpoints
 
@@ -49,8 +49,8 @@ For detailed information about the API endpoints, request/response formats, and 
 
 **\## Deployment**
 
-This project is deployed on Repl.it and can be accessed at the following URL:
+This project is deployed on render.com and can be accessed at the following URL:
 
-[LINK TO PROJECT](LINK TO PROJECT)
+[https://quotes-api-25h1.onrender.com/](https://quotes-api-25h1.onrender.com/)
 
 The database is hosted on Render.com using PostgreSQL.
